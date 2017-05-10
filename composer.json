@@ -1,0 +1,18 @@
+{
+  "name":              "php-devil/php-devil-ee",
+  "description":       "PHP Framework for web applications",
+  "minimum-stability": "dev",
+  "license":           "MIT",
+  "authors": [
+    {
+      "name":  "Alexey Volkov",
+      "email": "alex.phpdevil@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "PhpDevil\\" : ""
+    },
+    "classmap": ["Devil.php"]
+  }
+}
