@@ -9,60 +9,39 @@ abstract class AbstractModule extends AbstractController
 
     protected $_knownControllers = [];
 
-    public static function getDefaultComponents()
+    protected function registerComponent($tag, $class)
     {
-        return null;
+        $this->_knownComponents[$tag] = $class;
     }
-
-    public function configureComponentContainer($container, $definitions, $defaultTagClasses = null)
-    {
-        if ('_knownComponents' === $container) {
-            foreach ($definitions as $tag=>$def) {
-                $config = [];
-                $className = null;
-                $needInterface = null;
-                if (is_string($def)) $className = $def;
-                else {
-                    if (isset($def['class'])) $className = $def['class'];
-                    unset($def['class']);
-                }
-                if (!empty($def)) $config = $def;
-                if (null === $className) {
-                    if (isset($defaultTagClasses[$tag]['class'])) {
-                        $className = $defaultTagClasses[$tag]['class'];
-                    }
-                }
-                if ($className) {
-                    if (isset($defaultTagClasses[$tag]['interface'])) $needInterface = $defaultTagClasses[$tag]['interface'];
-                    if (class_exists($className)) {
-                        $this->$container[$tag] = [
-                            'class'     => $className,
-                            'interface' => $needInterface,
-                            'config'    => $config,
-                        ];
-                    }
-                }
-            }
-        } else {
-            $this->$container = $definitions;
-        }
-
-    }
-
-
 
     public function configureComponents($components)
     {
-        $this->configureComponentContainer('_knownComponents', $components, static::getDefaultComponents());
+        foreach ($components as $tag=>$class) {
+            $this->registerComponent($tag, $class);
+        }
+    }
+
+    protected function registerModel($tag, $class)
+    {
+        $this->_knownModels[$tag] = $class;
     }
 
     public function configureModels($models)
     {
-        $this->configureComponentContainer('_knownModels', $models);
+        foreach ($models as $tag=>$class) {
+            $this->registerModel($tag, $class);
+        }
+    }
+
+    protected function registerController($tag, $class)
+    {
+        $this->_knownControllers[$tag] = $class;
     }
 
     public function configureControllers($controllers)
     {
-        $this->configureComponentContainer('_knownControllers', $controllers);
+        foreach ($controllers as $tag=>$class) {
+            $this->registerController($tag, $class);
+        }
     }
 }
