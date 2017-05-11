@@ -39,6 +39,21 @@ abstract class Module extends AbstractHierarchyElement implements ModuleInterfac
      */
     protected $models;
 
+    public function loadModule($tagName)
+    {
+        if ($module = $this->modules->loadComponent($tagName)) {
+            return $module;
+        } else {
+            //todo: trigger error
+        }
+    }
+
+    public static function modules()
+    {
+        $overloaded = func_get_arg(0);
+
+    }
+
     /**
      * @param $name
      * @return ContainerInterface

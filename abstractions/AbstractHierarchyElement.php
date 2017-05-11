@@ -9,6 +9,21 @@ abstract class AbstractHierarchyElement
      */
     abstract protected static function getAllowedContainers();
 
+    protected $owner = null;
+
+    protected $tagName = null;
+
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+        return $this;
+    }
+
+    public function setTagName($tag)
+    {
+
+    }
+
     /**
      * Полный путь к конфигурационному файлу компонента при его наличии
      * @return string|null
@@ -26,7 +41,7 @@ abstract class AbstractHierarchyElement
     public static function getConfig()
     {
         if (($fileName = static::getConfigSource()) && file_exists($fileName)) {
-            return require $fileName;
+            return \Devil::loadConfigFile($fileName);
         } else {
             return [];
         }

@@ -13,6 +13,11 @@ class Models extends AbstractContainer
         return ModelInterface::class;
     }
 
+    protected function createClassFromDefault($config)
+    {
+        // TODO: Implement createClassFromDefault() method.
+    }
+
     public function loadComponent($tag)
     {
         $this->instantiate($tag);
