@@ -12,4 +12,10 @@ class Models extends AbstractContainer
     {
         return ModelInterface::class;
     }
+
+    public function loadComponent($tag)
+    {
+        $this->instantiate($tag);
+        return clone($this->instantiated[$tag]);
+    }
 }
