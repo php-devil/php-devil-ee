@@ -1,7 +1,7 @@
 <?php
 namespace PhpDevil\abstractions;
 
-abstract class AbstractController extends AbstractConfigurable implements ControllerInterface
+class AbstractController extends AbstractComponent
 {
-    protected $owner = null;
+
 }

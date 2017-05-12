@@ -9,6 +9,9 @@
       "email": "alex.phpdevil@gmail.com"
     }
   ],
+  "require": {
+    "php-devil/php-devil-configurator": "v1.0"
+  },
   "autoload": {
     "psr-4": {
       "PhpDevil\\" : ""
