@@ -101,6 +101,7 @@ class AbstractModule extends AbstractController
      * @param $name
      * @param $definition
      * @throws InvalidComponentClassException
+     * @return bool
      */
     public function registerComponent($name, $definition)
     {
@@ -119,6 +120,7 @@ class AbstractModule extends AbstractController
                 'class'  => $className,
                 'config' => $config
             ];
+            return true;
         } else {
             throw new InvalidComponentClassException([$this, $name, $config]);
         }

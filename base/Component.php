@@ -8,7 +8,7 @@ use PhpDevil\exceptions\InvalidConfigParamException;
  * Компонент приложения или модуля.
  * @package PhpDevil\base
  */
-abstract class Component extends AbstractComponent
+abstract class Component extends AbstractComponent implements ComponentInterface
 {
     /**
      * Для каждого свойства конфигурации у компонента должен быть метод установки значения.
