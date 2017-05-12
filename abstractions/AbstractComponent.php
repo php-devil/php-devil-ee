@@ -19,10 +19,10 @@ class AbstractComponent
      */
     public static function getConfig()
     {
+        $config = [];
         if ($fileName = static::getConfigSource()) {
-            return \Devil::loadConfigFile($fileName);
-        } else {
-            return [];
+            $config = \Devil::loadConfigFile($fileName);
         }
+        return $config;
     }
 }

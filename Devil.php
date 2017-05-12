@@ -1,13 +1,6 @@
 <?php
 class Devil
 {
-    private static $classToTag = [];
-
-    public static function rememberTagOfClass()
-    {
-
-    }
-
     /**
      * Загрузка файла конфигурации с кешированием в памяти
      * формат файлов: php|yml|json

@@ -25,6 +25,18 @@ class AbstractModule extends AbstractController
     protected $_components = [];
 
     /**
+     * Контроллеры, известные фронт-контроллеру на заданном уолвне
+     * @var array
+     */
+    protected $_knownControllers = [];
+
+    /**
+     * Известные данному фронт-контроллеру модели
+     * @var array
+     */
+    protected $_knownModels = [];
+
+    /**
      * Для фронт-контроллеров обращение к несуществующему полю класса
      * считается вызовом одноименного компонента
      * @param $name
@@ -64,11 +76,11 @@ class AbstractModule extends AbstractController
      */
     public static function controllers()
     {
+        $controllers = [];
         if (($config = static::getConfig()) && isset($config['data']['controllers'])) {
-            return $config['data']['controllers'];
-        } else {
-            return [];
+            $controllers = $config['data']['controllers'];
         }
+        return $controllers;
     }
 
     /**
@@ -77,11 +89,11 @@ class AbstractModule extends AbstractController
      */
     public static function models()
     {
+        $models = [];
         if (($config = static::getConfig()) && isset($config['data']['models'])) {
-            return $config['data']['models'];
-        } else {
-            return [];
+            $models = $config['data']['models'];
         }
+        return $models;
     }
 
     /**
@@ -121,5 +133,7 @@ class AbstractModule extends AbstractController
         if (!empty($components = static::components())) foreach ($components as $name => $definition) {
             $this->registerComponent($name, $definition);
         }
+        $this->_knownControllers = static::controllers();
+        $this->_knownModels = static::models();
     }
 }
