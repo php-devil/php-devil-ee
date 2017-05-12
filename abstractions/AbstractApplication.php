@@ -1,5 +1,6 @@
 <?php
 namespace PhpDevil\abstractions;
+use PhpDevil\exceptions\UnknownTagException;
 
 class AbstractApplication extends AbstractModule
 {
@@ -10,16 +11,38 @@ class AbstractApplication extends AbstractModule
     protected $_knownModules = [];
 
     /**
-     * Конфигурационный массив модулей
-     * @return array
+     * Загрузка модуля по псевдониму
+     * @param $tagName
+     * @return null
+     * @throws UnknownTagException
      */
-    public static function modules()
+    public function loadModule($tagName)
     {
-        $modules = [];
-        if (($config = static::getConfig()) && isset($config['data']['modules'])) {
-            $modules = $config['data']['modules'];
+        if (isset($this->_knownModules[$tagName])) {
+            $className = $this->_knownModules[$tagName]['class'];
+            $module =  new $className($this->_knownModules[$tagName]['config']);
+            $module->setOwner($this);
+            return $module;
+        } else {
+            throw new UnknownTagException(['module', $tagName, $this]);
         }
-        return $modules;
+    }
+
+    /**
+     * Передача управления действию контроллера напрямую
+     * @param array $request
+     * @return mixed
+     */
+    public function performDirectRequest(array $request)
+    {
+        if (3 === count($request)) {
+            $moduleName = array_shift($request);
+            if ($module = $this->loadModule($moduleName)) {
+                return $module->performDirectRequest($request);
+            }
+        } else {
+            return parent::performDirectRequest($request);
+        }
     }
 
     public function registerModule($tag, $config)
@@ -40,6 +63,19 @@ class AbstractApplication extends AbstractModule
         } else {
 
         }
+    }
+
+    /**
+     * Конфигурационный массив модулей
+     * @return array
+     */
+    public static function modules()
+    {
+        $modules = [];
+        if (($config = static::getConfig()) && isset($config['data']['modules'])) {
+            $modules = $config['data']['modules'];
+        }
+        return $modules;
     }
 
     public function __construct()

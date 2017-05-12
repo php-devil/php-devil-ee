@@ -4,6 +4,8 @@ namespace PhpDevil\abstractions;
 
 class AbstractComponent
 {
+    protected $owner = null;
+
     /**
      * Полный путь к конфигурационному файлу при его наличии
      * @return string|null
@@ -11,6 +13,16 @@ class AbstractComponent
     public static function getConfigSource()
     {
         return null;
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
+    }
+
+    public function getOwner()
+    {
+        return $this->owner;
     }
 
     /**

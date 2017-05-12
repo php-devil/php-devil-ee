@@ -23,28 +23,6 @@ class Application extends \PhpDevil\base\Application
     ];
 
     /**
-     * Передача управления действию контроллера напрямую
-     * @param array $request
-     */
-    public function performDirectRequest(array $request)
-    {
-        $requestDepth = count($request);
-        $module = $controller = $action = null;
-        switch ($requestDepth) {
-            case 3: list($module, $controller, $action) = $request;  break;
-            case 2: list($controller, $action) = $request;  break;
-            case 1: $action = $request[0];  break;
-        }
-        if ($module) $module = $this->loadModule($module);
-        else $module = $this;
-        if (null == $controller) $controller = 'default';
-        if ($controller = $module->loadController($controller)) {
-            if (null === $action) $action = 'default';
-            return $controller->performAction($action);
-        }
-    }
-
-    /**
      * Сценарий выполнения веб-приложения
      * @param RequestHandlerInterface|null $request
      */

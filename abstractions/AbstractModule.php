@@ -3,6 +3,7 @@ namespace PhpDevil\abstractions;
 
 use PhpDevil\exceptions\InvalidComponentClassException;
 use PhpDevil\exceptions\UnknownComponentException;
+use PhpDevil\exceptions\UnknownTagException;
 
 class AbstractModule extends AbstractController
 {
@@ -37,6 +38,23 @@ class AbstractModule extends AbstractController
     protected $_knownModels = [];
 
     /**
+     * Передача управления контроллеру по прямому запросу array(контроллер [, действие])
+     * @param array $request
+     * @return mixed
+     * @throws UnknownTagException
+     */
+    public function performDirectRequest(array $request)
+    {
+        $controller = array_shift($request);
+        echo $controller;
+        if ($controller = $this->loadController($controller)) {
+            $action = array_shift($request);
+            if (empty($action)) $action = 'default';
+            return $controller->performAction($action);
+        }
+    }
+
+    /**
      * Для фронт-контроллеров обращение к несуществующему полю класса
      * считается вызовом одноименного компонента
      * @param $name
@@ -61,14 +79,17 @@ class AbstractModule extends AbstractController
      * Загрузка контроллера по псевдониму
      * @param $tagName
      * @return null
+     * @throws UnknownTagException
      */
     public function loadController($tagName)
     {
         if (isset($this->_knownControllers[$tagName])) {
             $className = $this->_knownControllers[$tagName];
-            return new $className;
+            $controller =  new $className;
+            $controller->setOwner($this);
+            return $controller;
         } else {
-            return null;
+            throw new UnknownTagException(['controller', $tagName, $this]);
         }
     }
 
