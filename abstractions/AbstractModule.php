@@ -58,6 +58,21 @@ class AbstractModule extends AbstractController
     }
 
     /**
+     * Загрузка контроллера по псевдониму
+     * @param $tagName
+     * @return null
+     */
+    public function loadController($tagName)
+    {
+        if (isset($this->_knownControllers[$tagName])) {
+            $className = $this->_knownControllers[$tagName];
+            return new $className;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Конфигурационный массив компонентов
      * @return array
      */

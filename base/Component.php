@@ -22,8 +22,8 @@ abstract class Component extends AbstractComponent implements ComponentInterface
      */
     final protected function configure($param, $config)
     {
-        $setterMethod = 'configure' . ucfirst(strtolower($param));
-        $setterProperty = '_' . strtolower($param);
+        $setterMethod = 'configure' . ucfirst($param);
+        $setterProperty = '_' . $param;
         if (method_exists($this, $setterMethod)) {
             $this->$setterMethod($config);
         } elseif (property_exists($this, $setterProperty)) {
